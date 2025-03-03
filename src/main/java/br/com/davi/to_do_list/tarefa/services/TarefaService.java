@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.davi.to_do_list.exceptions.TaskNotFoundException;
 import br.com.davi.to_do_list.tarefa.models.TarefaEntity;
 import br.com.davi.to_do_list.tarefa.repository.TarefaRepository;
 
@@ -21,7 +22,12 @@ public class TarefaService {
     }
 
     public List<TarefaEntity> listarTodos() {
-        return this.tarefaRepository.findAll();
+        List<TarefaEntity> tarefas = this.tarefaRepository.findAll();        
+        if (tarefas.isEmpty()) {
+            throw new RuntimeException("Nenhuma tarefa foi encontrada");
+        }
+
+        return tarefas;
     }
 
     public TarefaEntity buscarPorId(UUID id) {
@@ -43,10 +49,14 @@ public class TarefaService {
             return this.tarefaRepository.save(novaTarefa);
         }
 
-        return null;
+        throw new TaskNotFoundException();
     }
 
     public void deletar(UUID id) {
+        if (this.tarefaRepository.findById(id).isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+        
         this.tarefaRepository.deleteById(id);
     }
 }

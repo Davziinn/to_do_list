@@ -33,4 +33,17 @@ public class ExceptionHandlerController {
 
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<UserNotFoundDTO> handleUserNotFoundException(UserNotFoundException err) {
+        UserNotFoundDTO userNotFoundDTO = new UserNotFoundDTO(err.getMessage());
+
+        return new ResponseEntity<>(userNotFoundDTO, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<TaskNotFoundDTO> handleTaskNotFoundException(TaskNotFoundException err) {
+        TaskNotFoundDTO taskNotFoundDTO = new TaskNotFoundDTO(err.getMessage());
+        return new ResponseEntity<>(taskNotFoundDTO, HttpStatus.NOT_FOUND);
+    }
 }

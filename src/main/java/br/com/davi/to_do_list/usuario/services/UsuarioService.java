@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.davi.to_do_list.exceptions.UserNotFoundException;
 import br.com.davi.to_do_list.usuario.models.UsuarioEntity;
 import br.com.davi.to_do_list.usuario.repository.UsuarioRepository;
 
@@ -17,11 +18,21 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public UsuarioEntity cadastrar(UsuarioEntity usuarioEntity) {
+        if (usuarioRepository.findByUsername(usuarioEntity.getUsername()).isPresent()) {
+            throw new RuntimeException("Username/Email já existe");
+        }
+        
         return this.usuarioRepository.save(usuarioEntity);
     }
 
     public List<UsuarioEntity> listarTodos() {
-        return this.usuarioRepository.findAll();
+        List<UsuarioEntity> usuarios = this.usuarioRepository.findAll();
+
+        if (usuarios.isEmpty()) {
+            throw new RuntimeException("Nenhum usuátio foi encontrado");
+        }
+
+        return usuarios;
     }
 
     public UsuarioEntity buscarPorId(UUID id) {
@@ -44,10 +55,13 @@ public class UsuarioService {
             return this.usuarioRepository.save(existeUsuario);
         }
 
-        return null;
+        throw new UserNotFoundException();
     }
 
     public void deletar(UUID id) {
+        if (this.usuarioRepository.findById(id).isEmpty()) {
+            throw new UserNotFoundException();
+        }
         this.usuarioRepository.deleteById(id);
     }
 }
