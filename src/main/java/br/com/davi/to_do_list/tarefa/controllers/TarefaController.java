@@ -1,9 +1,9 @@
 package br.com.davi.to_do_list.tarefa.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,23 +26,43 @@ public class TarefaController {
     private TarefaService tarefaService;
 
     @PostMapping("/")
-    public TarefaEntity criar(@RequestBody TarefaEntity tarefaEntity) {
-        return this.tarefaService.criar(tarefaEntity);
+    public Object criar(@RequestBody TarefaEntity tarefaEntity) {
+        try {
+            var result = this.tarefaService.criar(tarefaEntity);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/")
-    public List<TarefaEntity> buscarTodos() {
-        return this.tarefaService.listarTodos();
+    public Object buscarTodos() {
+        try {
+            var result = this.tarefaService.listarTodos();
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public TarefaEntity buscarPorId (@PathVariable UUID id) {
-        return this.tarefaService.buscarPorId(id);
+    public Object buscarPorId (@PathVariable UUID id) {
+        try {
+            var result = this.tarefaService.buscarPorId(id);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public TarefaEntity atualizar(@PathVariable UUID id, @RequestBody TarefaEntity tarefaEntity) {
-        return this.tarefaService.atualizar(id, tarefaEntity);
+    public Object atualizar(@PathVariable UUID id, @RequestBody TarefaEntity tarefaEntity) {
+        try {
+            var result = this.tarefaService.atualizar(id, tarefaEntity);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

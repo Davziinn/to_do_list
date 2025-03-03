@@ -1,9 +1,9 @@
 package br.com.davi.to_do_list.usuario.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.davi.to_do_list.usuario.models.UsuarioEntity;
 import br.com.davi.to_do_list.usuario.services.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -24,23 +25,43 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/")
-    public UsuarioEntity cadastrar(@RequestBody UsuarioEntity usuarioEntity) {
-        return this.usuarioService.cadastrar(usuarioEntity);
+    public Object cadastrar(@Valid @RequestBody UsuarioEntity usuarioEntity) {
+        try {
+            var result = this.usuarioService.cadastrar(usuarioEntity);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/")
-    public List<UsuarioEntity> listarTodos() {
-        return this.usuarioService.listarTodos();
+    public Object listarTodos() {
+        try {
+            var result = this.usuarioService.listarTodos();
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public UsuarioEntity buscarPorId(@PathVariable UUID id) {
-        return this.usuarioService.buscarPorId(id);
+    public Object buscarPorId(@PathVariable UUID id) {
+        try {
+            var result = this.usuarioService.buscarPorId(id);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public UsuarioEntity atualizar(@PathVariable UUID id, @RequestBody UsuarioEntity usuarioEntity) {
-        return this.usuarioService.atualizar(id, usuarioEntity);
+    public Object atualizar(@PathVariable UUID id, @RequestBody UsuarioEntity usuarioEntity) {
+        try {
+            var result = this.usuarioService.atualizar(id, usuarioEntity);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

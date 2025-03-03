@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -25,6 +26,7 @@ public class TarefaEntity {
 
     private String descricao;
 
+    @NotNull(message = "O status da tarefa deve ser informado")
     private boolean concluida;
 
     @CreationTimestamp
