@@ -1,4 +1,4 @@
-package br.com.davi.to_do_list.tarefa.models;
+package br.com.davi.to_do_list.modules.tarefa.models;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

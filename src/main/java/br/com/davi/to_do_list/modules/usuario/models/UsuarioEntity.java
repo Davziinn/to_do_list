@@ -1,4 +1,4 @@
-package br.com.davi.to_do_list.usuario.models;
+package br.com.davi.to_do_list.modules.usuario.models;
 
 import java.util.UUID;
 

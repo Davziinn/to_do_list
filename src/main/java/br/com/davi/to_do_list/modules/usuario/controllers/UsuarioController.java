@@ -1,4 +1,4 @@
-package br.com.davi.to_do_list.tarefa.controllers;
+package br.com.davi.to_do_list.modules.usuario.controllers;
 
 import java.util.UUID;
 
@@ -8,27 +8,26 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.davi.to_do_list.tarefa.models.TarefaEntity;
-import br.com.davi.to_do_list.tarefa.services.TarefaService;
-import org.springframework.web.bind.annotation.PutMapping;
-
-
+import br.com.davi.to_do_list.modules.usuario.models.UsuarioEntity;
+import br.com.davi.to_do_list.modules.usuario.services.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/tarefas")
-public class TarefaController {
+@RequestMapping("/user")
+public class UsuarioController {
     
     @Autowired
-    private TarefaService tarefaService;
+    private UsuarioService usuarioService;
 
     @PostMapping("/")
-    public Object criar(@RequestBody TarefaEntity tarefaEntity) {
+    public Object cadastrar(@Valid @RequestBody UsuarioEntity usuarioEntity) {
         try {
-            var result = this.tarefaService.criar(tarefaEntity);
+            var result = this.usuarioService.cadastrar(usuarioEntity);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,9 +35,9 @@ public class TarefaController {
     }
 
     @GetMapping("/")
-    public Object buscarTodos() {
+    public Object listarTodos() {
         try {
-            var result = this.tarefaService.listarTodos();
+            var result = this.usuarioService.listarTodos();
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -46,9 +45,9 @@ public class TarefaController {
     }
 
     @GetMapping("/{id}")
-    public Object buscarPorId (@PathVariable UUID id) {
+    public Object buscarPorId(@PathVariable UUID id) {
         try {
-            var result = this.tarefaService.buscarPorId(id);
+            var result = this.usuarioService.buscarPorId(id);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -56,9 +55,9 @@ public class TarefaController {
     }
 
     @PutMapping("/{id}")
-    public Object atualizar(@PathVariable UUID id, @RequestBody TarefaEntity tarefaEntity) {
+    public Object atualizar(@PathVariable UUID id, @RequestBody UsuarioEntity usuarioEntity) {
         try {
-            var result = this.tarefaService.atualizar(id, tarefaEntity);
+            var result = this.usuarioService.atualizar(id, usuarioEntity);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -66,7 +65,7 @@ public class TarefaController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
-        this.tarefaService.deletar(id);
+    public void deletar(@PathVariable UUID id) {
+        this.usuarioService.deletar(id);
     }
 }

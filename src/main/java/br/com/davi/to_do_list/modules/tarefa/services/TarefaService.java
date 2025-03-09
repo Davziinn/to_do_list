@@ -1,4 +1,4 @@
-package br.com.davi.to_do_list.tarefa.services;
+package br.com.davi.to_do_list.modules.tarefa.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.davi.to_do_list.exceptions.TaskNotFoundException;
-import br.com.davi.to_do_list.tarefa.models.TarefaEntity;
-import br.com.davi.to_do_list.tarefa.repository.TarefaRepository;
+import br.com.davi.to_do_list.modules.tarefa.models.TarefaEntity;
+import br.com.davi.to_do_list.modules.tarefa.repository.TarefaRepository;
 
 @Service
 public class TarefaService {

@@ -1,15 +1,17 @@
-package br.com.davi.to_do_list.usuario.services;
+package br.com.davi.to_do_list.modules.usuario.services;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.davi.to_do_list.exceptions.UserNotFoundException;
-import br.com.davi.to_do_list.usuario.models.UsuarioEntity;
-import br.com.davi.to_do_list.usuario.repository.UsuarioRepository;
+import br.com.davi.to_do_list.modules.usuario.repository.UsuarioRepository;
+import br.com.davi.to_do_list.modules.usuario.models.UsuarioEntity;
+
 
 @Service
 public class UsuarioService {
@@ -17,10 +19,16 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UsuarioEntity cadastrar(UsuarioEntity usuarioEntity) {
-        if (usuarioRepository.findByUsername(usuarioEntity.getUsername()).isPresent()) {
+        if (usuarioRepository.findByUsernameOrEmail(usuarioEntity.getUsername(), usuarioEntity.getEmail()).isPresent()) {
             throw new RuntimeException("Username/Email já existe");
         }
+
+        var password = passwordEncoder.encode(usuarioEntity.getPassword());
+        usuarioEntity.setPassword(password);
         
         return this.usuarioRepository.save(usuarioEntity);
     }
